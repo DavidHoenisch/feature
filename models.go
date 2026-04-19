@@ -9,4 +9,5 @@ type Flag struct {
 	Category string
 	Feature  string
 	State    bool
+	Value    any
 }

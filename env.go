@@ -5,29 +5,35 @@ import (
 	"strconv"
 )
 
-func getFlagFromEnv(key string) (string, error) {
+type ParserImpl struct {
+	v string
+}
+
+func GetFlagFromEnv(key string) ParserImpl {
 	v, set := os.LookupEnv(key)
 
 	switch set {
 	case false:
-		return "", KeyNotFoundErr
+		return ParserImpl{}
 	default:
 		if v == "" {
-			return "", KeyPresentButEmptyErr
+			return ParserImpl{}
 		}
 
-		return v, nil
+		return ParserImpl{
+			v: v,
+		}
 	}
 }
 
-func castVarToInt(v string) (int, error) {
-	return strconv.Atoi(v)
+func (p ParserImpl) ToInt() (int, error) {
+	return strconv.Atoi(p.v)
 }
 
-func castVarToFloat64(v string) (float64, error) {
-	return strconv.ParseFloat(v, 64)
+func (p ParserImpl) ToFloat64() (float64, error) {
+	return strconv.ParseFloat(p.v, 64)
 }
 
-func castVarToBool(v string) (bool, error) {
-	return strconv.ParseBool(v)
+func (p ParserImpl) ToBool() (bool, error) {
+	return strconv.ParseBool(p.v)
 }
